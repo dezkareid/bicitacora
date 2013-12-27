@@ -2,17 +2,17 @@ from google.appengine.ext import db
 from google.appengine.api import users
 
 class Ciclista(db.Model):
-	"""Ciclista"""
+	"""Entidad para administrar a los Ciclistas que usen la aplicacion"""
 	nombre = db.StringProperty(required=True)
-    facebook = db.LinkProperty(required=True)
-    twitter = db.LinkProperty(required=True)
-    es_hombre = db.BooleanProperty(default=True)
-    fecha_nacimiento = db.DateProperty()
-    fecha_registro = db.DateProperty()
-    usuario = db.UserProperty()
+	facebook = db.LinkProperty(required=True)
+	twitter = db.StringProperty(required=True)
+	es_hombre = db.BooleanProperty(default=True)
+	fecha_nacimiento = db.DateProperty()
+	fecha_registro = db.DateProperty(auto_now_add=True)
+	usuario = db.UserProperty()
 
 class Ruta(db.Model):
-	"""docstring for Ruta"""
+	"""Entidad para guardar una Ruta"""
 	nombre = db.StringProperty(required=True)
 	puntos = db.ListProperty(db.GeoPt,default=[])
 	inicio = db.DateTimeProperty(required=True,auto_now_add=True)
@@ -20,26 +20,26 @@ class Ruta(db.Model):
 	ciclista = db.ReferenceProperty(Ciclista)
 
 class Tipo_Lugar(db.Model):
-	"""docstring for Tipo_Lugar"""
+	"""Entidad para guardar los tipos de lugares"""
 	tipo = db.StringProperty(required=True)
 
 class Lugar(db.Model):
-	"""docstring for Lugar"""
+	"""Entidad para guardar lugares de interes para los ciclistas: talleres, biciestacionamientos,etc."""
 	nombre = db.StringProperty(required=True)
 	tipo = db.ReferenceProperty(Tipo_Lugar)
-	descripcion = db.TextProperty()
+	descripcion = db.TextProperty(required=True)
 	direccion = db.StringProperty(required=True)
 	alta = db.DateProperty(auto_now_add=True)
-	ubicacion = db.GeoPt()
+	ubicacion = db.GeoPtProperty()
 
 class Tipo_Suceso(db.Model):
-	"""docstring for Tipo_Lugar"""
+	"""Entidad que identifica a los tipos de sucesos: Manifestaciones, bloqueos, composturas de calle"""
 	tipo = db.StringProperty(required=True)
-	duracion = db.IntegerProperty()
+	duracion = db.IntegerProperty(required=True)
 
 class Suceso(db.Model):
-	"""docstring for Suceso"""
+	"""Entidad para reportar los tipos de sucesos que pueden haber en la ruta del ciclista"""
 	tipo = db.ReferenceProperty(Tipo_Suceso)
-	descripcion = db.TextProperty()
+	descripcion = db.TextProperty(required=True)
 	alta = db.DateTimeProperty(auto_now_add=True)
-	ubicacion = db.GeoPt()	
+	ubicacion = db.GeoPtProperty()	

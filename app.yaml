@@ -10,3 +10,6 @@ handlers:
 
 - url: /
   script: bicitacora.app
+
+- url: /estadisticas
+  script: bicitacora.est
